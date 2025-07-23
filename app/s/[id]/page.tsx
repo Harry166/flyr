@@ -202,7 +202,7 @@ export default function SharePage() {
           </div>
         )}
 
-        {shareData?.viewsRemaining > 0 && !shareData?.isLastView && (
+        {shareData?.viewsRemaining && shareData.viewsRemaining > 0 && !shareData?.isLastView && (
           <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
             <p>Views remaining: {shareData.viewsRemaining}</p>
           </div>
