@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: fylr
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_BASE_URL
+        value: https://fylr.onrender.com
+    disk:
+      name: fylr-data
+      mountPath: /var/data
+      sizeGB: 1

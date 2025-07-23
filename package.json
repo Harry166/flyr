@@ -5,12 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
     "lint": "next lint"
   },
   "dependencies": {
     "@huggingface/inference": "^4.5.3",
     "@types/formidable": "^3.4.5",
+    "@vercel/postgres": "^0.10.0",
     "bcryptjs": "^3.0.2",
     "date-fns": "^4.1.0",
     "formidable": "^3.5.4",

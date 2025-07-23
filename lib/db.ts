@@ -4,7 +4,10 @@ import path from 'path';
 import { promises as fs } from 'fs';
 
 // Database path
-const dbPath = path.join(process.cwd(), 'data', 'fylr.db');
+// Use Render's persistent disk if available, otherwise use local path
+const dbPath = process.env.RENDER
+  ? path.join('/var/data', 'shares.db')
+  : path.join(process.cwd(), 'data', 'shares.db');
 const uploadsPath = path.join(process.cwd(), 'uploads');
 
 // Ensure directories exist
