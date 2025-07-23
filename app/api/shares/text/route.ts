@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       type: 'text',
       content,
       password,
-      expirationMode: expirationMode || 'views',
+      expirationMode: (expirationMode || 'views') as 'views' | 'time',
       maxViews: expirationMode === 'views' ? (maxViews || 1) : undefined,
       expirationTime: expirationMode === 'time' ? expirationTime : undefined,
       isPremium: false

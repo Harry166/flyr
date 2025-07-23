@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const password = formData.get('password') as string;
-    const expirationMode = formData.get('expirationMode') as string;
+    const expirationMode = (formData.get('expirationMode') as string) as 'views' | 'time';
     const maxViews = parseInt(formData.get('maxViews') as string) || 1;
     const expirationTime = formData.get('expirationTime') as string;
     
@@ -29,7 +29,9 @@ export async function POST(request: NextRequest) {
     }
     
     // Save file to disk
-    const uploadsDir = path.join(process.cwd(), 'uploads');
+    const uploadsDir = process.env.RENDER
+      ? path.join('/var/data', 'uploads')
+      : path.join(process.cwd(), 'uploads');
     await fs.mkdir(uploadsDir, { recursive: true });
     
     const fileId = nanoid();
