@@ -4,10 +4,10 @@ import { promises as fs } from 'fs';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const password = request.headers.get('x-share-password') || undefined;
     
     const share = await getShare(id, password);
