@@ -2,10 +2,9 @@ import multer from 'multer';
 import path from 'path';
 import { nanoid } from 'nanoid';
 
-// Use Render's persistent disk if available, otherwise use local path
-const uploadsPath = process.env.RENDER
-  ? path.join('/var/data', 'uploads')
-  : path.join(process.cwd(), 'uploads');
+// Use environment variable or default paths
+const STORAGE_PATH = process.env.STORAGE_PATH || (process.env.RENDER ? '/tmp' : process.cwd());
+const uploadsPath = path.join(STORAGE_PATH, 'uploads');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

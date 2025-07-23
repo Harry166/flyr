@@ -29,9 +29,8 @@ export async function POST(request: NextRequest) {
     }
     
     // Save file to disk
-    const uploadsDir = process.env.RENDER
-      ? path.join('/var/data', 'uploads')
-      : path.join(process.cwd(), 'uploads');
+    const STORAGE_PATH = process.env.STORAGE_PATH || (process.env.RENDER ? '/tmp' : process.cwd());
+    const uploadsDir = path.join(STORAGE_PATH, 'uploads');
     await fs.mkdir(uploadsDir, { recursive: true });
     
     const fileId = nanoid();

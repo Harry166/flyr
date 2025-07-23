@@ -9,6 +9,8 @@ services:
         value: production
       - key: NEXT_PUBLIC_BASE_URL
         value: https://fylr.onrender.com
+      - key: STORAGE_PATH
+        value: /var/data
     disk:
       name: fylr-data
       mountPath: /var/data
