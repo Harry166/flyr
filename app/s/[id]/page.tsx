@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function SharePage() {
   const params = useParams();
@@ -11,14 +12,18 @@ export default function SharePage() {
   const [error, setError] = useState('');
   const [requiresPassword, setRequiresPassword] = useState(false);
   const [password, setPassword] = useState('');
-  const [shareData, setShareData] = useState<any>(null);
+  const [shareData, setShareData] = useState<{
+    type: string;
+    content?: string;
+    filename?: string;
+    mimetype?: string;
+    downloadUrl?: string;
+    isLastView?: boolean;
+    viewsRemaining?: number;
+  } | null>(null);
   const [passwordError, setPasswordError] = useState('');
 
-  useEffect(() => {
-    fetchShare();
-  }, [shareId]);
-
-  const fetchShare = async (pwd?: string) => {
+  const fetchShare = useCallback(async (pwd?: string) => {
     try {
       const headers: HeadersInit = {};
       if (pwd) {
@@ -40,11 +45,15 @@ export default function SharePage() {
 
       setShareData(data);
       setLoading(false);
-    } catch (err: any) {
-      setError(err.message || 'Failed to load share');
+    } catch (err) {
+      setError((err as Error).message || 'Failed to load share');
       setLoading(false);
     }
-  };
+  }, [shareId]);
+
+  useEffect(() => {
+    fetchShare();
+  }, [fetchShare]);
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,7 +62,7 @@ export default function SharePage() {
     
     try {
       await fetchShare(password);
-    } catch (err) {
+    } catch {
       setPasswordError('Incorrect password');
       setLoading(false);
     }
@@ -77,7 +86,7 @@ export default function SharePage() {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = shareData.filename;
+    a.download = shareData?.filename || 'download';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -107,9 +116,9 @@ export default function SharePage() {
             </div>
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Share Not Found</h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-            <a href="/" className="inline-block py-2 px-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
+            <Link href="/" className="inline-block py-2 px-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors">
               Create New Share
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -200,9 +209,9 @@ export default function SharePage() {
         )}
 
         <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
-          <a href="/" className="text-blue-600 hover:text-blue-700 font-medium">
+          <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
             Create your own secure share →
-          </a>
+          </Link>
         </div>
       </div>
     </div>

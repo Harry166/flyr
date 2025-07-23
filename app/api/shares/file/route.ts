@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       password,
       expirationMode: expirationMode || 'views',
       maxViews: expirationMode === 'views' ? maxViews : undefined,
-      expirationTime: expirationMode === 'time' ? expirationTime as any : undefined,
+      expirationTime: expirationMode === 'time' ? expirationTime : undefined,
       isPremium: false
     });
     
@@ -61,8 +61,8 @@ export async function POST(request: NextRequest) {
       shareId,
       shareUrl
     });
-  } catch (error) {
-    console.error('Error creating file share:', error);
+    } catch (err) {
+    console.error('Error creating file share:', err);
     return NextResponse.json({ 
       error: 'Failed to create share' 
     }, { status: 500 });

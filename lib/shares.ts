@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import { addHours, addDays } from 'date-fns';
 import { openDb } from './db';
 import { promises as fs } from 'fs';
-import path from 'path';
 
 export interface CreateShareOptions {
   type: 'text' | 'file';

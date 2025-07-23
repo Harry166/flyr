@@ -68,8 +68,8 @@ export default function Home() {
         if (!response.ok) throw new Error(data.error);
         setShareUrl(data.shareUrl);
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to create share');
+    } catch (err) {
+      setError((err as Error).message || 'Failed to create share');
     } finally {
       setIsLoading(false);
     }
